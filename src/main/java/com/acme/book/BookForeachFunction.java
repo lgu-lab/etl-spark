@@ -3,7 +3,7 @@ package com.acme.book;
 import java.util.Map;
 
 import org.apache.spark.sql.Row;
-import org.demo.framework.script.AbstractForeachFunction;
+import org.demo.framework.AbstractForeachFunction;
 
 public class BookForeachFunction extends AbstractForeachFunction {
 

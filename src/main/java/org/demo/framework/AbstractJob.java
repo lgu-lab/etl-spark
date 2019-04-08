@@ -1,4 +1,4 @@
-package org.demo.framework.job;
+package org.demo.framework;
 
 import java.util.Map;
 

@@ -3,7 +3,7 @@ package com.acme.book;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.demo.framework.job.AbstractJob;
+import org.demo.framework.AbstractJob;
 
 /**
  * Job definition to process a file 

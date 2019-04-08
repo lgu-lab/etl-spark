@@ -1,4 +1,4 @@
-package org.demo.framework.script;
+package org.demo.framework;
 
 import java.io.Serializable;
 import java.util.Map;
