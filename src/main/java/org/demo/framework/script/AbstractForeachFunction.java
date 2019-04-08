@@ -31,26 +31,34 @@ public abstract class AbstractForeachFunction extends AbstractScriptExecutor imp
 		long taskId = TaskContext.get().taskAttemptId(); 
 		log("call(Row) : Task = " + taskId + " / Partition = " + partitionId );
 
-		
-		// The 'row' always remains unchanged
-		
-		
+		// Put data in a map (the row always remains unchanged) 
 		Map<String,Object> map = new HashMap<>();
 
 		log("call(Row) : preProcessing ... ");
 		preProcessing(row, map);
 		
-		// DO SOMETHING HERE WITH THE GIVEN BEAN INSTANCE....
-
 		// TRANSFORM THE CURRENT ROW USING A SCRIPT 
-		//executeScript(genericRow.getMap());
-		log("call(Row) : execute script ... ");
-		executeScript(map);
-		log("call(Row) : script executed." );
+//		//executeScript(genericRow.getMap());
+//		log("call(Row) : execute script ... ");
+//		executeScript(map);
+//		log("call(Row) : script executed." );
+		process(row, map);
 		
 		log("call(Row) : postProcessing ... ");
 		postProcessing(row, map);
 		log("call(Row) : end. ");		
 	}
 	
+	/**
+	 * Standard processing : script execution <br>
+	 * For specific processing just override this method
+	 * @param row
+	 * @param map
+	 * @throws Exception
+	 */
+	public void process(Row row, Map<String,Object> map) throws Exception {
+		log("call(Row) : process -> executeScript ... ");
+		executeScript(map);
+		log("call(Row) : script executed." );
+	}
 }
