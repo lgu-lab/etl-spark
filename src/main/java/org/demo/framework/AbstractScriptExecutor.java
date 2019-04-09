@@ -42,7 +42,9 @@ public abstract class AbstractScriptExecutor implements Serializable {
 	}
 
 	protected void log(String msg) {
-		System.out.println("[LOG] " + msg );
+		if ( LogConfig.LOG ) {
+			System.out.println("[LOG] " + msg );
+		}
 	}
 	
 	private CompiledScript getCompiledScript() throws Exception {

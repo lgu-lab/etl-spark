@@ -11,6 +11,7 @@ public class BookForeachFunction extends AbstractForeachFunction {
 
 	public BookForeachFunction(String script) throws Exception {
 		super(script);
+		log("BookForeachFunction CONSTRUCTOR");
 	}
 	
 	@Override

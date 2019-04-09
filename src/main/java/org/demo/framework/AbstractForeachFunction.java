@@ -25,6 +25,10 @@ public abstract class AbstractForeachFunction extends AbstractScriptExecutor imp
 	
 	@Override
 	public void call(Row row) throws Exception {
+		internalCall(row);
+	}
+	
+	public void internalCall(Row row) throws Exception {
 		
 		// Get Spark partition ID 
 		int partitionId = TaskContext.getPartitionId(); // get from ThreadLocal

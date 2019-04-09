@@ -8,6 +8,8 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.types.StructField;
+import org.apache.spark.sql.types.StructType;
 
 public abstract class AbstractJob {
 	
@@ -77,6 +79,15 @@ public abstract class AbstractJob {
 		
 		dataset = initialDataset ;
 		
+		StructType schema = dataset.schema();
+		log("SCHEMA  (length = " + schema.length() + ") : ");
+		for ( String s : schema.fieldNames() ) {
+			log(" . " + s );
+		}
+		log("SCHEMA  StructFields : ");
+		for ( StructField structField : schema.fields() ) {
+			log(" . " + structField.name() + " : dataType = " + structField.dataType() + " / nullable = " + structField.nullable());
+		}
 		return dataset ;
 	}
 	
