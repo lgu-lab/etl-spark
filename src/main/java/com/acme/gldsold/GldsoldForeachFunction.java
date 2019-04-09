@@ -3,14 +3,18 @@ package com.acme.gldsold;
 import java.util.Map;
 
 import org.apache.spark.sql.Row;
+import org.apache.spark.util.LongAccumulator;
 import org.demo.framework.AbstractForeachFunction;
 
 public class GldsoldForeachFunction extends AbstractForeachFunction {
 
 	private static final long serialVersionUID = 1L;
+	
+	private final LongAccumulator countAccumulator;
 
-	public GldsoldForeachFunction(String script) throws Exception {
+	public GldsoldForeachFunction(String script, LongAccumulator countAccumulator) throws Exception {
 		super(script);
+		this.countAccumulator = countAccumulator;
 		log("GldsoldForeachFunction CONSTRUCTOR");
 	}
 	
@@ -32,7 +36,7 @@ public class GldsoldForeachFunction extends AbstractForeachFunction {
 	
 	@Override
 	public void postProcessing(Row row, Map<String,Object> map) throws Exception {
-		
+		countAccumulator.add(1);
 //		log("In postProcessing : map = " + map);
 	}
 }

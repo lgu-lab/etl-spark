@@ -3,6 +3,9 @@ package com.acme.gldsold;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.spark.api.java.function.ForeachFunction;
+import org.apache.spark.sql.Row;
+import org.apache.spark.util.LongAccumulator;
 import org.demo.framework.AbstractJob;
 
 /**
@@ -55,9 +58,19 @@ public class GldsoldJob extends AbstractJob {
 //				+ "// Compute  \n"
 //				+ "price = price * 1.2 ; \n"
 //				;
-
-		// Job actions ...
-		foreach( new GldsoldForeachFunction("") );
 		
+		String script = "" ;
+		
+		// Declare job accumulators 
+		LongAccumulator countAccumulator = getSparkContext().longAccumulator();
+		
+		// Launch 'foreach' ACTION 
+		ForeachFunction<Row> foreachFunction = new GldsoldForeachFunction(script, countAccumulator);
+		foreach( foreachFunction );
+
+//		// Job actions ...
+//		foreach( new GldsoldForeachFunction("") );
+		log("ACCUMULATOR = " + countAccumulator );
+
 	}
 }
