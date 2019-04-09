@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.demo.framework.AbstractJob;
+import org.demo.framework.FileLoader;
 
 /**
  * Job definition to process a file 
@@ -38,6 +39,11 @@ public class BookJob extends AbstractJob {
 	}
 	
 	/**
+	 * SCRIPT file path
+	 */
+	private final static String SCRIPT_FILE_PATH = "D:/TMP/csv-files/books.script";
+
+	/**
 	 * Job constructor
 	 */
 	public BookJob() {
@@ -50,24 +56,14 @@ public class BookJob extends AbstractJob {
 
 	public void run() throws Exception {
 		
-		String script = "" 
-				+ "print('In Javascript');"
-				+ "// Compute  \n"
-				+ "price = price * 1.2 ; \n"
-				;
+//		String script = "" 
+//				+ "print('In Javascript');"
+//				+ "// Compute  \n"
+//				+ "price = price * 1.2 ; \n"
+//				;
 
-		// Job initialization 
-//		setReaderOptions(readerOptions);
-
-		//Dataset<Person> ds = job.getDataset();
-
-		// Job actions ...
-		
-//		long count = job.count();
-//		System.out.println("count = " + count);
-//
-//		Person person = job.first();
-//		System.out.println("First is " + person);
+		String script = FileLoader.loadFile(SCRIPT_FILE_PATH);
+		log("Script : \n" + script ) ;
 
 		foreach( new BookForeachFunction(script) );
 		

@@ -23,12 +23,12 @@ public class BookForeachFunction extends AbstractForeachFunction {
 		log("In preProcessing : map = " + map);
 	}
 
-	@Override
-	public void process(Row row, Map<String,Object> map) {
-		// SPECIFIC PROCESSING FOR THIS JOB 
-		double price = (double) map.get("price");
-		map.put("price", price + 200);
-	}
+//	@Override
+//	public void process(Row row, Map<String,Object> map) {
+//		// SPECIFIC PROCESSING FOR THIS JOB 
+//		double price = (double) map.get("price");
+//		map.put("price", price + 200);
+//	}
 	
 	@Override
 	public void postProcessing(Row row, Map<String,Object> map) throws Exception {

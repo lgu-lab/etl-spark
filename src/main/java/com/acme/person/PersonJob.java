@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.demo.framework.AbstractJob;
+import org.demo.framework.FileLoader;
 
 /**
  * Job definition to process a file 
@@ -24,11 +25,16 @@ public class PersonJob extends AbstractJob {
 	private final static String JOB_MASTER_CONFIG = "local[4]";
 
 	/**
-	 * Input file path
+	 * DATA file path
 	 */
 	private final static String INPUT_FILE_PATH = "D:/TMP/csv-files/person.csv";
 	// Other example : "hdfs://localhost:9002/data/data.csv"
 	
+	/**
+	 * SCRIPT file path
+	 */
+	private final static String SCRIPT_FILE_PATH = "D:/TMP/csv-files/person.script";
+
 	/**
 	 * Input file reader options
 	 */
@@ -51,12 +57,9 @@ public class PersonJob extends AbstractJob {
 
 	public void run() throws Exception {
 		
-		String script = "" 
-				+ "print('In Javascript');"
-				+ "// Compute  \n"
-				+ "id = id + 100 ; \n"
-				;
-
+		String script = FileLoader.loadFile(SCRIPT_FILE_PATH);
+		log("Script : \n" + script ) ;
+		
 		// Job initialization 
 //		setReaderOptions(readerOptions);
 
