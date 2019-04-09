@@ -16,6 +16,8 @@ public class BookJobRunner {
 //		job.setReaderOptions(readerOptions);
 //		job.foreach( new PersonForeachFunction(script) );
 		
+		System.out.println("BEFORE job.run() ");
 		job.run();
+		System.out.println("AFTER job.run() ");
 	}
 }

@@ -3,6 +3,9 @@ package com.acme.book;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.spark.api.java.function.ForeachFunction;
+import org.apache.spark.sql.Row;
+import org.apache.spark.util.LongAccumulator;
 import org.demo.framework.AbstractJob;
 import org.demo.framework.FileLoader;
 
@@ -56,20 +59,18 @@ public class BookJob extends AbstractJob {
 
 	public void run() throws Exception {
 		
-//		String script = "" 
-//				+ "print('In Javascript');"
-//				+ "// Compute  \n"
-//				+ "price = price * 1.2 ; \n"
-//				;
-
 		String script = FileLoader.loadFile(SCRIPT_FILE_PATH);
 		log("Script : \n" + script ) ;
 
-		foreach( new BookForeachFunction(script) );
-		
-//		Dataset<String> dsJSON = job.toJSON();
-//		System.out.println("First is " + dsJSON.first());
-//	
+		// SparkContext sparkContext = getSparkContext();
 
+		// Declare job accumulators 
+		LongAccumulator countAccumulator = getSparkContext().longAccumulator();
+		
+		// Launch 'foreach' ACTION 
+		ForeachFunction<Row> foreachFunction = new BookForeachFunction(script, countAccumulator);
+		foreach( foreachFunction );
+		
+		log("ACCUMULATOR = " + countAccumulator );
 	}
 }

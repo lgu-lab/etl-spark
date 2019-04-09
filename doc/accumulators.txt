@@ -1,0 +1,5 @@
+
+
+https://spark.apache.org/docs/latest/rdd-programming-guide.html#accumulators
+
+https://www.edureka.co/blog/spark-accumulators-explained 

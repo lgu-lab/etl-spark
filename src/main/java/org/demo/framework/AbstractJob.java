@@ -2,6 +2,7 @@ package org.demo.framework;
 
 import java.util.Map;
 
+import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.function.ForeachFunction;
 import org.apache.spark.sql.DataFrameReader;
 import org.apache.spark.sql.Dataset;
@@ -16,7 +17,9 @@ public abstract class AbstractJob {
 	private final String   jobName ;
 	private final String   jobMaster ;
 	private final String   filePath ;
-//	private final MapFunction<Row, Row>  mappingFunction ;
+	
+	private final SparkSession sparkSession ;
+
 	private Map<String,String> dataFrameReaderOptions = null ;
 	
 	private Dataset<Row> dataset = null ;
@@ -26,17 +29,39 @@ public abstract class AbstractJob {
 	 * @param jobName the 'application name' for the job (used as 'appName(jobName)' ) 
 	 * @param jobMaster the 'master' configuration for the job e.g. 'local[4]' (used by 'master("local[4]")' ) 
 	 * @param filePath
-	 * @param mappingFunction
 	 */
 	public AbstractJob(String jobName, String jobMaster,  String filePath ) {
-//			MapFunction<Row, Row> mappingFunction) {
 		super();
 		this.jobName   = jobName;
 		this.jobMaster = jobMaster;
 		this.filePath  = filePath ;
 //		this.mappingFunction = mappingFunction ;
+
+		log("Creating SparkSession...");
+    	this.sparkSession = SparkSession.builder()
+    			.appName(jobName)
+    			.master(jobMaster) 
+    			.config("spark.ui.enabled", false)
+    			.getOrCreate();
+		log("SparkSession ready.");
 	}
 
+	protected String getName() {
+		return this.jobName;
+	}
+
+	protected String getMaster() {
+		return this.jobMaster;
+	}
+
+	protected SparkSession getSparkSession() {
+		return this.sparkSession;
+	}
+	
+	protected SparkContext getSparkContext() {
+		return this.sparkSession.sparkContext();
+	}
+	
 	protected void log(String msg) {
 		System.err.flush();
 		System.out.println("[LOG] " + msg);
@@ -48,14 +73,6 @@ public abstract class AbstractJob {
 	}
 	
 	private Dataset<Row> createDataset() {
-		
-		log("Creating SparkSession...");
-    	SparkSession sparkSession = SparkSession.builder()
-    			.appName(jobName)
-    			.master(jobMaster) 
-    			.config("spark.ui.enabled", false)
-    			.getOrCreate();
-		log("SparkSession ready.");
 		
 		log("Creating DataFrameReader...");
     	DataFrameReader dataFrameReader = sparkSession.read()
