@@ -11,6 +11,7 @@ import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
+import org.apache.spark.util.LongAccumulator;
 
 public abstract class AbstractJob {
 	
@@ -19,6 +20,7 @@ public abstract class AbstractJob {
 	private final String   filePath ;
 	
 	private final SparkSession sparkSession ;
+	private final Accumulators accumulators ;
 
 	private Map<String,String> dataFrameReaderOptions = null ;
 	
@@ -44,6 +46,15 @@ public abstract class AbstractJob {
     			.config("spark.ui.enabled", false)
     			.getOrCreate();
 		log("SparkSession ready.");
+		
+		this.accumulators = new Accumulators();
+		// Create and register "row-count" accumulator
+		LongAccumulator rowCountAccumulator = getSparkContext().longAccumulator(Accumulators.ROW_COUNT);
+		accumulators.register(Accumulators.ROW_COUNT, rowCountAccumulator);
+		// Create and register "row-count" accumulator
+		LongAccumulator errCountAccumulator = getSparkContext().longAccumulator(Accumulators.ERR_COUNT);
+		accumulators.register(Accumulators.ERR_COUNT, errCountAccumulator);
+		
 	}
 
 	protected String getName() {
@@ -57,13 +68,24 @@ public abstract class AbstractJob {
 	protected SparkSession getSparkSession() {
 		return this.sparkSession;
 	}
-	
+		
 	protected SparkContext getSparkContext() {
 		return this.sparkSession.sparkContext();
 	}
 	
+	protected Accumulators getAccumulators() {
+		return this.accumulators;
+	}
+	protected LongAccumulator getAccumulator(String name) {
+		return this.accumulators.get(name);
+	}
+	
 	protected void log(String msg) {
 		BasicLogger.log(msg);
+	}
+	
+	protected void logAccumulator(String s, LongAccumulator accumulator )  {
+		BasicLogger.logAccumulator(s, accumulator);
 	}
 
 	public void setReaderOptions(Map<String,String> options) {

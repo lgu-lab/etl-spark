@@ -4,25 +4,22 @@ import java.util.Map;
 
 import org.apache.spark.sql.Row;
 import org.demo.framework.AbstractForeachFunction;
+import org.demo.framework.Accumulators;
 
 public class PersonForeachFunction extends AbstractForeachFunction {
 
 	private static final long serialVersionUID = 1L;
 
-//	public PersonForeachFunction() {
-//		super();
-//	}
-
-	public PersonForeachFunction(String script) throws Exception {
-		super(script);
+	public PersonForeachFunction(Accumulators accumulators, String script) throws Exception {
+		super(accumulators,script);
 	}
 	
 	@Override
 	public void preProcessing(Row row, Map<String,Object> map) throws Exception {
 		
-		map.put("id", Integer.parseInt( row.<String>getAs(0).trim() ) );
-		map.put("firstName", row.<String>getAs(1).trim() );
-		map.put("lastName", row.<String>getAs(2).trim() );
+		map.put("id", getInteger(row, 0) );
+		map.put("firstName", getString(row, 1) );
+		map.put("lastName", getString(row, 2) );
 		log("preProcessing : map = " + map);
 	}
 

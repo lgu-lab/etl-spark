@@ -3,19 +3,21 @@ package com.acme.mercure;
 import java.util.Map;
 
 import org.apache.spark.sql.Row;
-import org.apache.spark.util.LongAccumulator;
 import org.demo.framework.AbstractForeachFunction;
+import org.demo.framework.Accumulators;
 
 public class MercureForeachFunction extends AbstractForeachFunction {
 
 	private static final long serialVersionUID = 1L;
 	
-	private final LongAccumulator countAccumulator;
+	// private final LongAccumulator countAccumulator;
 
-	public MercureForeachFunction(String script, LongAccumulator countAccumulator) throws Exception {
-		super(script);
-		this.countAccumulator = countAccumulator;
-		log("GldsoldForeachFunction CONSTRUCTOR");
+	//public MercureForeachFunction(String script, LongAccumulator countAccumulator) throws Exception {
+//	public MercureForeachFunction(SparkSession sparkSession, String script) throws Exception {
+	public MercureForeachFunction(Accumulators accumulators, String script) throws Exception {
+		super(accumulators, script);
+//		this.countAccumulator = countAccumulator;
+		log("ForeachFunction CONSTRUCTOR");
 	}
 	
 	@Override
@@ -24,15 +26,15 @@ public class MercureForeachFunction extends AbstractForeachFunction {
 		int i = 0 ;
 		
 		// INPUT VALUES (keep columns order)
-		map.put("NUEDI", row.<String>getAs(i++).trim() );
-		map.put("DAFCO", row.<String>getAs(i++).trim() );
+		map.put("NUEDI", getString(row,i++) );
+		map.put("DAFCO", getString(row,i++) );
 		// Number values 
-		map.put("FOROF", Double.parseDouble( row.<String>getAs(i++).trim() ) );
-		map.put("FORRA", Double.parseDouble( row.<String>getAs(i++).trim() ) );
-		map.put("FORRT", Double.parseDouble( row.<String>getAs(i++).trim() ) );
-		map.put("FORSD", Double.parseDouble( row.<String>getAs(i++).trim() ) );
-		map.put("FORFR", Double.parseDouble( row.<String>getAs(i++).trim() ) );
-		map.put("CAFSD", Double.parseDouble( row.<String>getAs(i++).trim() ) );
+		map.put("FOROF", getDouble(row,i++) );
+		map.put("FORRA", getDouble(row,i++) );
+		map.put("FORRT", getDouble(row,i++) );
+		map.put("FORSD", getDouble(row,i++) );
+		map.put("FORFR", getDouble(row,i++) );
+		map.put("CAFSD", getDouble(row,i++) );
 		
 		// OUTPUT VALUES (supposed to be computed in script)
 		map.put("CAFDO", 0.0 );
@@ -50,7 +52,7 @@ public class MercureForeachFunction extends AbstractForeachFunction {
 	
 	@Override
 	public void postProcessing(Row row, Map<String,Object> map) throws Exception {
-		countAccumulator.add(1);
+//		countAccumulator.add(1);
 		log("In postProcessing : map = " + map);
 		log(" CAFDO = " + map.get("CAFDO") + " / FOROF = " + map.get("FOROF") );
 		log(" CAFRA = " + map.get("CAFRA") + " / FORRA = " + map.get("FORRA") );

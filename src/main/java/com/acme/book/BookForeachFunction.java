@@ -3,27 +3,24 @@ package com.acme.book;
 import java.util.Map;
 
 import org.apache.spark.sql.Row;
-import org.apache.spark.util.LongAccumulator;
 import org.demo.framework.AbstractForeachFunction;
+import org.demo.framework.Accumulators;
 
 public class BookForeachFunction extends AbstractForeachFunction {
 
 	private static final long serialVersionUID = 1L;
 	
-	private final LongAccumulator countAccumulator;
-
-	public BookForeachFunction(String script, LongAccumulator countAccumulator) throws Exception {
-		super(script);
-		this.countAccumulator = countAccumulator;
+	public BookForeachFunction(Accumulators accumulators, String script) throws Exception {
+		super(accumulators, script);
 		log("BookForeachFunction CONSTRUCTOR");
 	}
 	
 	@Override
 	public void preProcessing(Row row, Map<String,Object> map) throws Exception {
 		
-		map.put("id", Integer.parseInt( row.<String>getAs(0).trim() ) );
-		map.put("title", row.<String>getAs(1).trim() );
-		map.put("price", Double.parseDouble( row.<String>getAs(2).trim() ) );
+		map.put("id",    getInteger(row, 0) );
+		map.put("title", getString(row, 1) );
+		map.put("price", getDouble(row, 2) );
 		log("In preProcessing : map = " + map);
 	}
 
@@ -36,7 +33,6 @@ public class BookForeachFunction extends AbstractForeachFunction {
 	
 	@Override
 	public void postProcessing(Row row, Map<String,Object> map) throws Exception {
-		countAccumulator.add(1);
 		log("In postProcessing : map = " + map);
 	}
 }

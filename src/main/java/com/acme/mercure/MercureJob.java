@@ -7,6 +7,7 @@ import org.apache.spark.api.java.function.ForeachFunction;
 import org.apache.spark.sql.Row;
 import org.apache.spark.util.LongAccumulator;
 import org.demo.framework.AbstractJob;
+import org.demo.framework.Accumulators;
 import org.demo.framework.FileLoader;
 
 /**
@@ -63,16 +64,22 @@ public class MercureJob extends AbstractJob {
 		String script = FileLoader.loadFile(SCRIPT_FILE_PATH);
 		log("Script : \n" + script ) ;
 		
-		// Declare job accumulators 
-		LongAccumulator countAccumulator = getSparkContext().longAccumulator();
+		// Accumulators with initial values 
+		LongAccumulator rowCountAccumulator = getAccumulator(Accumulators.ROW_COUNT);
+		LongAccumulator errCountAccumulator = getAccumulator(Accumulators.ERR_COUNT);
+		logAccumulator("job", rowCountAccumulator);
+		logAccumulator("job", errCountAccumulator);
 		
 		// Launch 'foreach' ACTION 
-		ForeachFunction<Row> foreachFunction = new MercureForeachFunction(script, countAccumulator);
+//		ForeachFunction<Row> foreachFunction = new MercureForeachFunction(script, countAccumulator);
+//		ForeachFunction<Row> foreachFunction = new MercureForeachFunction(getSparkSession(), script);
+//		ForeachFunction<Row> foreachFunction = new MercureForeachFunction(accumulators, script);
+		ForeachFunction<Row> foreachFunction = new MercureForeachFunction(getAccumulators(), script);
 		foreach( foreachFunction );
 
-//		// Job actions ...
-//		foreach( new MercureForeachFunction("") );
-		log("ACCUMULATOR = " + countAccumulator );
+		// Resulting accumulators
+		logAccumulator("job", rowCountAccumulator);
+		logAccumulator("job", errCountAccumulator);
 
 	}
 }

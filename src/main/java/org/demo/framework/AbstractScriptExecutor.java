@@ -9,6 +9,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import org.apache.spark.util.LongAccumulator;
+
 /**
  * This class MUST BE SERIALIZABLE in order to be used with Spark 
  * 
@@ -35,7 +37,7 @@ public abstract class AbstractScriptExecutor implements Serializable {
 		this.compiledScript = null ;
 	}
 	
-	public AbstractScriptExecutor(String script) throws Exception {
+	public AbstractScriptExecutor(String script) {
 		super();
 		this.script = script ;
 		this.compiledScript = null ;
@@ -43,6 +45,9 @@ public abstract class AbstractScriptExecutor implements Serializable {
 
 	protected void log(String msg) {
 		BasicLogger.log(msg);
+	}
+	protected void logAccumulator(String s, LongAccumulator accumulator) {
+		BasicLogger.logAccumulator(s, accumulator);
 	}
 	
 	private CompiledScript getCompiledScript() throws Exception {

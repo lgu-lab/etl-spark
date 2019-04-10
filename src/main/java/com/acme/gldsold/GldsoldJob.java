@@ -7,6 +7,7 @@ import org.apache.spark.api.java.function.ForeachFunction;
 import org.apache.spark.sql.Row;
 import org.apache.spark.util.LongAccumulator;
 import org.demo.framework.AbstractJob;
+import org.demo.framework.Accumulators;
 
 /**
  * Job definition to process a file 
@@ -59,18 +60,19 @@ public class GldsoldJob extends AbstractJob {
 //				+ "price = price * 1.2 ; \n"
 //				;
 		
-		String script = "" ;
-		
-		// Declare job accumulators 
-		LongAccumulator countAccumulator = getSparkContext().longAccumulator();
+		String script = "" ; // NO SCRIPT
 		
 		// Launch 'foreach' ACTION 
-		ForeachFunction<Row> foreachFunction = new GldsoldForeachFunction(script, countAccumulator);
+		ForeachFunction<Row> foreachFunction = new GldsoldForeachFunction(getAccumulators(), script);
 		foreach( foreachFunction );
-
-//		// Job actions ...
-//		foreach( new GldsoldForeachFunction("") );
-		log("ACCUMULATOR = " + countAccumulator );
+		
+		// RESULT 
+		LongAccumulator errCount = getAccumulator(Accumulators.ERR_COUNT);
+		logAccumulator("End of job", getAccumulator(Accumulators.ROW_COUNT) );
+		logAccumulator("End of job", errCount );
+		if ( errCount.value() > 0 ) {
+			System.out.println("\n   /!\\  " + errCount.value() + " ERROR(S)  /!\\  \n");
+		}
 
 	}
 }

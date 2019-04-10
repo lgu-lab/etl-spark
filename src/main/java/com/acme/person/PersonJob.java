@@ -3,7 +3,11 @@ package com.acme.person;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.spark.api.java.function.ForeachFunction;
+import org.apache.spark.sql.Row;
+import org.apache.spark.util.LongAccumulator;
 import org.demo.framework.AbstractJob;
+import org.demo.framework.Accumulators;
 import org.demo.framework.FileLoader;
 
 /**
@@ -60,11 +64,6 @@ public class PersonJob extends AbstractJob {
 		String script = FileLoader.loadFile(SCRIPT_FILE_PATH);
 		log("Script : \n" + script ) ;
 		
-		// Job initialization 
-//		setReaderOptions(readerOptions);
-
-		//Dataset<Person> ds = job.getDataset();
-
 		// Job actions ...
 		
 //		long count = job.count();
@@ -73,11 +72,18 @@ public class PersonJob extends AbstractJob {
 //		Person person = job.first();
 //		System.out.println("First is " + person);
 
-		foreach( new PersonForeachFunction(script) );
+		// ACTION 'FOR EACH'
+		ForeachFunction<Row> foreachFunction = new PersonForeachFunction(getAccumulators(), script);
+		foreach(foreachFunction);
 		
 //		Dataset<String> dsJSON = job.toJSON();
 //		System.out.println("First is " + dsJSON.first());
 //	
-
+		LongAccumulator errCount = getAccumulator(Accumulators.ERR_COUNT);
+		logAccumulator("End of job", getAccumulator(Accumulators.ROW_COUNT) );
+		logAccumulator("End of job", errCount );
+		if ( errCount.value() > 0 ) {
+			System.out.println("\n   /!\\  " + errCount.value() + " ERROR(S)  /!\\  \n");
+		}
 	}
 }
