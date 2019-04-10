@@ -63,9 +63,7 @@ public abstract class AbstractJob {
 	}
 	
 	protected void log(String msg) {
-		System.err.flush();
-		System.out.println("[LOG] " + msg);
-		System.out.flush();
+		BasicLogger.log(msg);
 	}
 
 	public void setReaderOptions(Map<String,String> options) {
