@@ -139,4 +139,14 @@ public abstract class AbstractForeachFunction extends AbstractScriptExecutor imp
 		String s = row.<String>getAs(i).trim() ;
 		return s.equalsIgnoreCase("true");
 	}
+	
+	protected void checkType(Map<String,Object> map, String key, Class<?> clazz) {
+		Object o = map.get(key);
+		if ( ! clazz.isInstance(o) ) {
+			String msg = "Invalid type for '" + key + " : " + o.getClass().getName() + " (" +clazz.getName() + " expected)" ;
+			log(msg);
+			throw new RuntimeException(msg);
+		}
+	}
+	
 }

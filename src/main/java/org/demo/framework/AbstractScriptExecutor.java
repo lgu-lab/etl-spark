@@ -90,7 +90,18 @@ public abstract class AbstractScriptExecutor implements Serializable {
 
 			// Get variables from JS engine context ( context --> map )
 			for ( Map.Entry<String,Object> entry : map.entrySet() ) {
-				entry.setValue(scriptEngine.get(entry.getKey()));
+				Object originalValue = entry.getValue();
+				Object scriptValue = scriptEngine.get(entry.getKey());
+				Object newValue = scriptValue ;
+				if ( originalValue instanceof Integer ) {
+					if ( ! ( scriptValue instanceof Integer) ) {
+						// The script has changed the value and it's type  Double 
+						// No integer in JavaScript (only double)
+						Number n = (Number) scriptValue ;
+						newValue = n.intValue() ;
+					}
+				}
+				entry.setValue(newValue);
 			}
 		}
 	}

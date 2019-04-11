@@ -34,5 +34,10 @@ public class BookForeachFunction extends AbstractForeachFunction {
 	@Override
 	public void postProcessing(Row row, Map<String,Object> map) throws Exception {
 		log("In postProcessing : map = " + map);
+		// If in doubt, you can check the type to be sure it hasn't been altered by the script execution 
+		checkType(map, "id", Integer.class);
+		checkType(map, "title", String.class);
+		checkType(map, "price", Double.class);
+
 	}
 }

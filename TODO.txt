@@ -1,10 +1,5 @@
 
 
-Get map from JavaScript context : automatic Integer conversion in AbstractScriptExecutor 
-		// TODO : Javascript double values management before post processing 
-		Number n = (Number) map.get("id");
-		map.put("id", n.intValue() );
-
 		
 AbstractScriptExecutor :
 	REMOVE : import org.apache.spark.util.LongAccumulator;	
@@ -19,3 +14,15 @@ In Job :
 Rename "org.demo" --> "org.sparkyflow"
 
 Test ENV VARS / Databricks : cf https://docs.databricks.com/user-guide/clusters/spark-config.html
+
+
+
+
+---------------------------------------------------------------------
+DONE :
+
+Get map from JavaScript context : automatic Integer conversion in AbstractScriptExecutor 
+		// TODO : Javascript double values management before post processing 
+		Number n = (Number) map.get("id");
+		map.put("id", n.intValue() );
+

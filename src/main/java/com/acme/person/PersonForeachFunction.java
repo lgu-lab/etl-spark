@@ -26,13 +26,14 @@ public class PersonForeachFunction extends AbstractForeachFunction {
 	@Override
 	public void postProcessing(Row row, Map<String,Object> map) throws Exception {
 		
-		// TODO : Javascript double values management before post processing 
-		Number n = (Number) map.get("id");
-		map.put("id", n.intValue() );
-
+		// If in doubt, you can check the type to be sure it hasn't been altered by the script execution 
+		checkType(map, "id", Integer.class);
+		checkType(map, "firstName", String.class);
+		
 		log("postProcessing : map = " + map);
 		PersonDAO dao = new PersonDAO();
 		log("postProcessing : saving in database...");
 		dao.save(map);
 	}
+	
 }
