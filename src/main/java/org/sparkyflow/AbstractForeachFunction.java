@@ -8,6 +8,8 @@ import org.apache.spark.api.java.function.ForeachFunction;
 import org.apache.spark.sql.Row;
 import org.apache.spark.util.LongAccumulator;
 import org.sparkyflow.javascript.AbstractScriptExecutor;
+import org.sparkyflow.log.ErrorLogger;
+import org.sparkyflow.log.StdOutErrorLogger;
 
 public abstract class AbstractForeachFunction extends AbstractScriptExecutor implements ForeachFunction<Row> {
 
@@ -17,6 +19,7 @@ public abstract class AbstractForeachFunction extends AbstractScriptExecutor imp
 //
 	private final LongAccumulator rowCountAccumulator;
 	private final LongAccumulator errCountAccumulator;
+	private final ErrorLogger errorLogger;
 
 //	public AbstractForeachFunction(SparkSession sparkSession ) {
 	public AbstractForeachFunction(Accumulators accumulators ) {
@@ -34,6 +37,7 @@ public abstract class AbstractForeachFunction extends AbstractScriptExecutor imp
 		this.rowCountAccumulator   = accumulators.get(Accumulators.ROW_COUNT);
 		
 		this.errCountAccumulator   = accumulators.get(Accumulators.ERR_COUNT);
+		this.errorLogger = new StdOutErrorLogger();
 	}
 	
 	public abstract void preProcessing(Row row, Map<String,Object>map) throws Exception ;
@@ -53,12 +57,14 @@ public abstract class AbstractForeachFunction extends AbstractScriptExecutor imp
 		try {
 			internalCall(row);
 		} catch (Exception e) {
+			
 			// Increment "error count" accumulator for the current worker/executor
 			if ( errCountAccumulator != null ) {
 				errCountAccumulator.add(1);
 				logAccumulator("Foreach function", errCountAccumulator);
 			}
-			// TODO Log error in error file
+			// Log error in error file
+			errorLogger.log(e);
 		}
 	}
 	

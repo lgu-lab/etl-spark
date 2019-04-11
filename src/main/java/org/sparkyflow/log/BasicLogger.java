@@ -1,4 +1,4 @@
-package org.sparkyflow;
+package org.sparkyflow.log;
 
 import org.apache.spark.util.LongAccumulator;
 

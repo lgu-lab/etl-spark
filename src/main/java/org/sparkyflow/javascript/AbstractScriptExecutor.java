@@ -10,7 +10,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.apache.spark.util.LongAccumulator;
-import org.sparkyflow.BasicLogger;
+import org.sparkyflow.log.BasicLogger;
 
 /**
  * This class MUST BE SERIALIZABLE in order to be used with Spark 
