@@ -7,41 +7,51 @@ import org.apache.spark.TaskContext;
 import org.apache.spark.api.java.function.ForeachFunction;
 import org.apache.spark.sql.Row;
 import org.apache.spark.util.LongAccumulator;
-import org.sparkyflow.javascript.AbstractScriptExecutor;
 import org.sparkyflow.log.ErrorLogger;
 import org.sparkyflow.log.StdOutErrorLogger;
 
-public abstract class AbstractForeachFunction extends AbstractScriptExecutor implements ForeachFunction<Row> {
+public abstract class AbstractForeachFunction extends AbstractAction implements ForeachFunction<Row> {
 
 	private static final long serialVersionUID = 1L;
 	
-//	private final SparkSession sparkSession ;
-//
 	private final LongAccumulator rowCountAccumulator;
 	private final LongAccumulator errCountAccumulator;
 	private final ErrorLogger errorLogger;
 
-//	public AbstractForeachFunction(SparkSession sparkSession ) {
+	/**
+	 * Constructor
+	 * @param accumulators
+	 */
 	public AbstractForeachFunction(Accumulators accumulators ) {
-//		this(sparkSession, null);
 		this(accumulators, null);
 	}
 
+	/**
+	 * Constructor
+	 * @param accumulators
+	 * @param script
+	 */
 	public AbstractForeachFunction(Accumulators accumulators, String script) {
 		super(script);
-//		this.sparkSession = sparkSession ;
-//		SparkContext sparkContext = sparkSession.sparkContext();
-//		this.rowCountAccumulator = sparkContext.longAccumulator();
-
-//		this.rowCountAccumulator   = sparkContext.longAccumulator(Accumulators.ROW_COUNT);
 		this.rowCountAccumulator   = accumulators.get(Accumulators.ROW_COUNT);
-		
 		this.errCountAccumulator   = accumulators.get(Accumulators.ERR_COUNT);
 		this.errorLogger = new StdOutErrorLogger();
 	}
 	
+	/**
+	 * Method for pre-processing (before 'call')
+	 * @param row
+	 * @param map
+	 * @throws Exception
+	 */
 	public abstract void preProcessing(Row row, Map<String,Object>map) throws Exception ;
 	
+	/**
+	 * Method for post-processing (after 'call')
+	 * @param row
+	 * @param map
+	 * @throws Exception
+	 */
 	public abstract void postProcessing(Row row, Map<String,Object>map) throws Exception ;
 	
 	@Override

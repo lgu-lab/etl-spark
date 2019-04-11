@@ -1,11 +1,9 @@
 
+---------------------------------------------------------------------
+TODO :
+---------------------------------------------------------------------
 
-ErrorLogger interface 
 		
-AbstractScriptExecutor :
-	REMOVE : import org.apache.spark.util.LongAccumulator;	
-	Must remain independent of Spark
-	
 
 Test JDBC DAO with MS SQL Server
 
@@ -15,6 +13,7 @@ Test ENV VARS / Databricks : cf https://docs.databricks.com/user-guide/clusters/
 
 ---------------------------------------------------------------------
 DONE :
+---------------------------------------------------------------------
 
 Get map from JavaScript context : automatic Integer conversion in AbstractScriptExecutor 
 		// TODO : Javascript double values management before post processing 
@@ -27,4 +26,9 @@ In Job :
 	String script = FileLoader.loadFile(SCRIPT_FILE_PATH);
 	==> String script = loadScript();
 	 
+ErrorLogger interface 
 
+AbstractScriptExecutor :
+	REMOVE : import org.apache.spark.util.LongAccumulator;	
+	Must remain independent of Spark
+	

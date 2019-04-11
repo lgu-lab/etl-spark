@@ -9,9 +9,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import org.apache.spark.util.LongAccumulator;
-import org.sparkyflow.log.BasicLogger;
-
 /**
  * This class MUST BE SERIALIZABLE in order to be used with Spark 
  * 
@@ -32,25 +29,16 @@ public abstract class AbstractScriptExecutor implements Serializable {
 	private final String         script ;
 	private       CompiledScript compiledScript ;
 	
-//	public AbstractScriptExecutor() {
-//		super();
-//		this.script = null ;
-//		this.compiledScript = null ;
-//	}
-	
+	/**
+	 * Constructor
+	 * @param script
+	 */
 	public AbstractScriptExecutor(String script) {
 		super();
 		this.script = script ;
 		this.compiledScript = null ;
 	}
 
-	protected void log(String msg) {
-		BasicLogger.log(msg);
-	}
-	protected void logAccumulator(String s, LongAccumulator accumulator) {
-		BasicLogger.logAccumulator(s, accumulator);
-	}
-	
 	private CompiledScript getCompiledScript() throws Exception {
 		if ( compiledScript != null ) {
 			return compiledScript;
@@ -71,6 +59,11 @@ public abstract class AbstractScriptExecutor implements Serializable {
 		}
 	}
 	
+	/**
+	 * Executes the script with the given context ( initial variables defined in the given map )
+	 * @param map initial variables 
+	 * @throws Exception
+	 */
 	public void executeScript( Map<String,Object> map ) throws Exception {
 		
 		CompiledScript cs = getCompiledScript();
@@ -96,7 +89,7 @@ public abstract class AbstractScriptExecutor implements Serializable {
 				Object newValue = scriptValue ;
 				if ( originalValue instanceof Integer ) {
 					if ( ! ( scriptValue instanceof Integer) ) {
-						// The script has changed the value and it's type  Double 
+						// The script has changed the value 
 						// No integer in JavaScript (only double)
 						Number n = (Number) scriptValue ;
 						newValue = n.intValue() ;
