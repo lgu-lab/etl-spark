@@ -43,6 +43,8 @@ public class MercureForeachFunction extends AbstractForeachFunction {
 		map.put("RCCAFDP", 0.0 );
 		map.put("CAFDF", 0.0 );
 		
+		map.put("CAFDP", 0.0 ); // New 11/04/2019
+		map.put("CANAD", 0.0 ); // New 11/04/2019
 	}
 
 // NO SPECIFIC PROCESSING FOR THIS JOB (just executue the job)
@@ -59,5 +61,8 @@ public class MercureForeachFunction extends AbstractForeachFunction {
 		log(" CAFDRE = " + map.get("CAFDRE") + " / FORRT = " + map.get("FORRT") );
 		log(" RCCAFDP = " + map.get("RCCAFDP")  );
 		log(" CAFDF = " + map.get("CAFDF")  );
+		
+		log(" CAFDP = " + map.get("CAFDP") ); // New 11/04/2019
+		log(" CANAD = " + map.get("CANAD") ); // New 11/04/2019
 	}
 }

@@ -1,6 +1,10 @@
 package org.sparkyflow.log;
 
-public class StdOutErrorLogger implements ErrorLogger {
+import java.io.Serializable;
+
+public class StdOutErrorLogger implements ErrorLogger, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public static boolean LOG = true ;
 	
