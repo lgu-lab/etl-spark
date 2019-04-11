@@ -12,9 +12,9 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.demo.framework.db.DataSourceProvider;
 import org.junit.Assert;
 import org.junit.Test;
+import org.sparkyflow.jdbc.DataSourceProvider;
 
 
 

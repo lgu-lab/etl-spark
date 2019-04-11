@@ -13,7 +13,7 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
-import org.demo.framework.db.DataSourceProvider;
+import org.sparkyflow.jdbc.DataSourceProvider;
 
 /**
  * Utility class for JUnit test cases 

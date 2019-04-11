@@ -1,4 +1,4 @@
-package org.demo.framework;
+package org.sparkyflow;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +7,7 @@ import org.apache.spark.TaskContext;
 import org.apache.spark.api.java.function.ForeachFunction;
 import org.apache.spark.sql.Row;
 import org.apache.spark.util.LongAccumulator;
+import org.sparkyflow.javascript.AbstractScriptExecutor;
 
 public abstract class AbstractForeachFunction extends AbstractScriptExecutor implements ForeachFunction<Row> {
 

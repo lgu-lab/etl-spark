@@ -1,4 +1,4 @@
-package org.demo.framework;
+package org.sparkyflow.javascript;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -10,6 +10,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.apache.spark.util.LongAccumulator;
+import org.sparkyflow.BasicLogger;
 
 /**
  * This class MUST BE SERIALIZABLE in order to be used with Spark 
@@ -31,11 +32,11 @@ public abstract class AbstractScriptExecutor implements Serializable {
 	private final String         script ;
 	private       CompiledScript compiledScript ;
 	
-	public AbstractScriptExecutor() {
-		super();
-		this.script = null ;
-		this.compiledScript = null ;
-	}
+//	public AbstractScriptExecutor() {
+//		super();
+//		this.script = null ;
+//		this.compiledScript = null ;
+//	}
 	
 	public AbstractScriptExecutor(String script) {
 		super();

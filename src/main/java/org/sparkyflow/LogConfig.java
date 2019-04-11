@@ -1,4 +1,4 @@
-package org.demo.framework;
+package org.sparkyflow;
 
 public class LogConfig {
 

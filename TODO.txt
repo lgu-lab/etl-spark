@@ -1,21 +1,16 @@
 
 
+ErrorLogger interface 
 		
 AbstractScriptExecutor :
 	REMOVE : import org.apache.spark.util.LongAccumulator;	
 	Must remain independent of Spark
 	
 
-In Job :
-	String script = FileLoader.loadFile(SCRIPT_FILE_PATH);
-	==> String script = loadScript();
-	 
+Test JDBC DAO with MS SQL Server
 
-Rename "org.demo" --> "org.sparkyflow"
 
 Test ENV VARS / Databricks : cf https://docs.databricks.com/user-guide/clusters/spark-config.html
-
-
 
 
 ---------------------------------------------------------------------
@@ -25,4 +20,11 @@ Get map from JavaScript context : automatic Integer conversion in AbstractScript
 		// TODO : Javascript double values management before post processing 
 		Number n = (Number) map.get("id");
 		map.put("id", n.intValue() );
+
+Rename "org.demo" --> "org.sparkyflow"
+
+In Job :
+	String script = FileLoader.loadFile(SCRIPT_FILE_PATH);
+	==> String script = loadScript();
+	 
 

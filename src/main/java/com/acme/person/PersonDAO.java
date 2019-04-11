@@ -4,8 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
 
-import org.demo.framework.db.DbOperations;
-import org.demo.framework.db.GenericJdbcDAO;
+import org.sparkyflow.jdbc.DbOperations;
+import org.sparkyflow.jdbc.GenericJdbcDAO;
 
 public class PersonDAO extends GenericJdbcDAO<Map<String,Object>> implements DbOperations { 
 

@@ -3,8 +3,8 @@ package com.acme.person;
 import java.util.Map;
 
 import org.apache.spark.sql.Row;
-import org.demo.framework.AbstractForeachFunction;
-import org.demo.framework.Accumulators;
+import org.sparkyflow.AbstractForeachFunction;
+import org.sparkyflow.Accumulators;
 
 public class PersonForeachFunction extends AbstractForeachFunction {
 

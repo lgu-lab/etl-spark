@@ -6,9 +6,8 @@ import java.util.Map;
 import org.apache.spark.api.java.function.ForeachFunction;
 import org.apache.spark.sql.Row;
 import org.apache.spark.util.LongAccumulator;
-import org.demo.framework.AbstractJob;
-import org.demo.framework.Accumulators;
-import org.demo.framework.FileLoader;
+import org.sparkyflow.AbstractJob;
+import org.sparkyflow.Accumulators;
 
 /**
  * Job definition to process a file 
@@ -54,16 +53,18 @@ public class BookJob extends AbstractJob {
 		
 		super(	JOB_NAME, 
 				JOB_MASTER_CONFIG, 
-				INPUT_FILE_PATH );
-		setReaderOptions(READER_OPTIONS);
+				INPUT_FILE_PATH,
+				READER_OPTIONS,
+				SCRIPT_FILE_PATH);
+//		setReaderOptions(READER_OPTIONS);
 	}
 
 	public void run() throws Exception {
 		
-		String script = FileLoader.loadFile(SCRIPT_FILE_PATH);
-		log("Script : \n" + script ) ;
-
-		// SparkContext sparkContext = getSparkContext();
+//		String script = FileLoader.loadFile(SCRIPT_FILE_PATH);
+//		log("Script : \n" + script ) ;
+//
+		String script = loadScript();
 
 		
 		// Launch 'foreach' ACTION 

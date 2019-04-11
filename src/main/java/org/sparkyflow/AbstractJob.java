@@ -1,4 +1,4 @@
-package org.demo.framework;
+package org.sparkyflow;
 
 import java.util.Map;
 
@@ -18,12 +18,12 @@ public abstract class AbstractJob {
 	private final String   jobName ;
 	private final String   jobMaster ;
 	private final String   filePath ;
+	private final Map<String,String> fileReaderOptions ;
+	private final String scriptFilePath ;
 	
 	private final SparkSession sparkSession ;
 	private final Accumulators accumulators ;
 
-	private Map<String,String> dataFrameReaderOptions = null ;
-	
 	private Dataset<Row> dataset = null ;
 	
 	/**
@@ -31,13 +31,16 @@ public abstract class AbstractJob {
 	 * @param jobName the 'application name' for the job (used as 'appName(jobName)' ) 
 	 * @param jobMaster the 'master' configuration for the job e.g. 'local[4]' (used by 'master("local[4]")' ) 
 	 * @param filePath
+	 * @param fileReaderOptions
+	 * @param scriptFilePath
 	 */
-	public AbstractJob(String jobName, String jobMaster,  String filePath ) {
+	public AbstractJob(String jobName, String jobMaster,  String filePath, Map<String,String> fileReaderOptions, String scriptFilePath ) {
 		super();
 		this.jobName   = jobName;
 		this.jobMaster = jobMaster;
 		this.filePath  = filePath ;
-//		this.mappingFunction = mappingFunction ;
+		this.fileReaderOptions = fileReaderOptions ;
+		this.scriptFilePath = scriptFilePath ;
 
 		log("Creating SparkSession...");
     	this.sparkSession = SparkSession.builder()
@@ -73,6 +76,13 @@ public abstract class AbstractJob {
 		return this.sparkSession.sparkContext();
 	}
 	
+	protected String loadScript() {
+		if ( scriptFilePath != null && ! scriptFilePath.trim().isEmpty() ) {
+			return FileLoader.loadFile(scriptFilePath);
+		}
+		return null ;
+	}
+	
 	protected Accumulators getAccumulators() {
 		return this.accumulators;
 	}
@@ -88,9 +98,9 @@ public abstract class AbstractJob {
 		BasicLogger.logAccumulator(s, accumulator);
 	}
 
-	public void setReaderOptions(Map<String,String> options) {
-		this.dataFrameReaderOptions = options ;
-	}
+//	public void setReaderOptions(Map<String,String> options) {
+//		this.dataFrameReaderOptions = options ;
+//	}
 	
 	private Dataset<Row> createDataset() {
 		
@@ -101,7 +111,10 @@ public abstract class AbstractJob {
 	    	.format("csv");
     	
 		log("Applying DataFrameReader options...");
-    	dataFrameReader.options(this.dataFrameReaderOptions);
+//    	dataFrameReader.options(this.dataFrameReaderOptions);
+		if ( fileReaderOptions != null ) {
+	    	dataFrameReader.options(fileReaderOptions);
+		}
     	
 		log("DataFrameReader ready.");    	
 		

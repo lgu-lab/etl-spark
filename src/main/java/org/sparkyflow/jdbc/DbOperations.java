@@ -1,4 +1,4 @@
-package org.demo.framework.db;
+package org.sparkyflow.jdbc;
 
 import java.util.Map;
 
